@@ -223,7 +223,7 @@ const UsersPage = () => {
                                 : 'As HR, you can create and onboard Manager, Employee, and Intern accounts.'}
                         </p>
 
-                        <form onSubmit={handleCreateUser} className="form-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+                        <form onSubmit={handleCreateUser} className="form-grid">
                             <div className="field">
                                 <label>Full Name *</label>
                                 <input

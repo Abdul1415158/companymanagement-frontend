@@ -95,7 +95,7 @@ const AttendancePage = () => {
                         </p>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <button
                             className="primary-btn"
                             onClick={handleCheckIn}

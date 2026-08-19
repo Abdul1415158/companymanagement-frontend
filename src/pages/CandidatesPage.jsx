@@ -678,7 +678,7 @@ const CandidatesPage = () => {
                             </div>
                         </div>
 
-                        <form onSubmit={handleOnboardSubmit} className="form-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                        <form onSubmit={handleOnboardSubmit} className="form-grid">
                             <div className="field">
                                 <label>Candidate Name</label>
                                 <input value={onboardModal.candidate.fullName} disabled style={{ opacity: 0.8 }} />
