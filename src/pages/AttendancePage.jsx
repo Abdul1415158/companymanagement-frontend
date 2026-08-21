@@ -172,19 +172,34 @@ const AttendancePage = () => {
                                 color: 'var(--text)'
                             }}
                         />
-                        <input
-                            type="date"
-                            value={dateFilter}
-                            onChange={(e) => setDateFilter(e.target.value)}
-                            style={{
-                                padding: '6px 10px',
-                                fontSize: '0.82rem',
-                                borderRadius: 'var(--radius-sm)',
-                                border: '1px solid var(--border-subtle)',
-                                backgroundColor: 'var(--panel-alt)',
-                                color: 'var(--text)'
-                            }}
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                            <label style={{
+                                fontSize: '0.68rem',
+                                fontWeight: 700,
+                                color: 'var(--text-muted)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                userSelect: 'none'
+                            }}>
+                                Filter by Date
+                            </label>
+                            <input
+                                type="date"
+                                value={dateFilter}
+                                onChange={(e) => setDateFilter(e.target.value)}
+                                style={{
+                                    padding: '6px 10px',
+                                    fontSize: '0.82rem',
+                                    borderRadius: 'var(--radius-sm)',
+                                    border: '1px solid var(--border-subtle)',
+                                    backgroundColor: 'var(--panel-alt)',
+                                    color: dateFilter ? 'var(--text)' : 'var(--text-muted)',
+                                    minWidth: '140px',
+                                    width: '100%',
+                                    boxSizing: 'border-box'
+                                }}
+                            />
+                        </div>
                         {dateFilter ? (
                             <button className="secondary-btn" onClick={() => setDateFilter('')} style={{ padding: '6px 10px', fontSize: '0.8rem' }}>
                                 Clear Date

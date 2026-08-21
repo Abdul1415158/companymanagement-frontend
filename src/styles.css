@@ -1489,6 +1489,34 @@ div.badge,
     color: var(--text);
 }
 
+/* Date Input — Mobile visibility fix */
+input[type="date"] {
+    /* Ensure the calendar icon & text are always visible */
+    color: var(--text);
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 130px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+/* iOS/Safari: force date text to show even when empty */
+input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    min-width: 110px;
+}
+
+/* Style the calendar/clear icon button area */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+    filter: var(--calendar-icon-filter, none);
+}
+
+body[data-theme='dark'] input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
 /* =========================================================
    RESPONSIVE DESIGN BREAKPOINTS (Tablet, Mobile, Compact)
    ========================================================= */
