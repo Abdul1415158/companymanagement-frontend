@@ -33,6 +33,7 @@ const CandidatesPage = () => {
     const [stageFilter, setStageFilter] = useState('ALL');
     const [portalFilter, setPortalFilter] = useState('ALL');
     const [searchTerm, setSearchTerm] = useState('');
+    const [showAddForm, setShowAddForm] = useState(false);
 
     // Application / Registration Form state
     const [form, setForm] = useState({
@@ -97,6 +98,7 @@ const CandidatesPage = () => {
                     source: 'LinkedIn',
                     status: 'APPLIED',
                 });
+                setShowAddForm(false);
             }
             fetchCandidates();
         } catch (error) {
@@ -323,96 +325,82 @@ const CandidatesPage = () => {
                 </div>
             ) : null}
 
-            {/* Application / Registration Form */}
-            <div className="card" id="apply-form-section">
-                <div className="page-header">
-                    <div>
-                        <h3>{isCandidate ? 'Submit Candidate Application' : 'Register Candidate to Recruitment Pipeline'}</h3>
-                        <p style={{ margin: '4px 0 0', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                            {isCandidate
-                                ? 'Submit your application for review by our talent acquisition team'
-                                : 'Add applicant record to recruitment pipeline (No password required — Candidate exists only as applicant until portal invitation is sent)'}
-                        </p>
-                    </div>
-                </div>
-
-                {msg.text ? (
-                    <div className={`badge ${msg.type}`} style={{ marginBottom: '14px', padding: '6px 12px' }}>
-                        {msg.text}
-                    </div>
-                ) : null}
-
-                <form className="form-grid" onSubmit={handleSubmit}>
-                    <div className="field">
-                        <label>Full Name *</label>
-                        <input
-                            value={form.fullName}
-                            onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                            placeholder="e.g. Zulfikar Ali"
-                            required
-                        />
+            {/* Candidate Self-Apply Form (only visible to CANDIDATE role) */}
+            {isCandidate ? (
+                <div className="card" id="apply-form-section">
+                    <div className="page-header">
+                        <div>
+                            <h3>Submit Candidate Application</h3>
+                            <p style={{ margin: '4px 0 0', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                                Submit your application for review by our talent acquisition team
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="field">
-                        <label>Email Address *</label>
-                        <input
-                            type="email"
-                            value={form.email}
-                            onChange={(e) => setForm({ ...form, email: e.target.value })}
-                            placeholder="zulfikar@gmail.com"
-                            required
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Phone Number</label>
-                        <input
-                            value={form.phone}
-                            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                            placeholder="+92-300-1122334"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Position Applied For *</label>
-                        <input
-                            value={form.positionApplied}
-                            onChange={(e) => setForm({ ...form, positionApplied: e.target.value })}
-                            placeholder="e.g. Full Stack Engineer / CTO / Marketing Associate"
-                            required
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label>Application Source</label>
-                        <input
-                            value={form.source}
-                            onChange={(e) => setForm({ ...form, source: e.target.value })}
-                            placeholder="LinkedIn / Referral / Website"
-                        />
-                    </div>
-
-                    {canManageCandidates ? (
-                        <div className="field">
-                            <label>Initial Recruitment Stage</label>
-                            <select
-                                value={form.status}
-                                onChange={(e) => setForm({ ...form, status: e.target.value })}
-                            >
-                                {recruitmentStages.map((s) => (
-                                    <option key={s.key} value={s.key}>{s.label}</option>
-                                ))}
-                            </select>
+                    {msg.text ? (
+                        <div className={`badge ${msg.type}`} style={{ marginBottom: '14px', padding: '8px 12px' }}>
+                            {msg.text}
                         </div>
                     ) : null}
 
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <button className="primary-btn" type="submit" disabled={loading}>
-                            {loading ? 'Submitting...' : (isCandidate ? 'Submit Job Application' : 'Add Candidate to Pipeline')}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    <form className="form-grid" onSubmit={handleSubmit}>
+                        <div className="field">
+                            <label>Full Name *</label>
+                            <input
+                                value={form.fullName}
+                                onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                                placeholder="e.g. Zulfikar Ali"
+                                required
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label>Email Address *</label>
+                            <input
+                                type="email"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                placeholder="zulfikar@gmail.com"
+                                required
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label>Phone Number</label>
+                            <input
+                                value={form.phone}
+                                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                                placeholder="+92-300-1122334"
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label>Position Applied For *</label>
+                            <input
+                                value={form.positionApplied}
+                                onChange={(e) => setForm({ ...form, positionApplied: e.target.value })}
+                                placeholder="e.g. Full Stack Engineer / CTO / Marketing Associate"
+                                required
+                            />
+                        </div>
+
+                        <div className="field">
+                            <label>Application Source</label>
+                            <input
+                                value={form.source}
+                                onChange={(e) => setForm({ ...form, source: e.target.value })}
+                                placeholder="LinkedIn / Referral / Website"
+                            />
+                        </div>
+
+                        <div style={{ gridColumn: '1 / -1' }}>
+                            <button className="primary-btn" type="submit" disabled={loading}>
+                                {loading ? 'Submitting...' : 'Submit Job Application'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            ) : null}
 
             {/* Applications History & HR Recruitment Pipeline Table */}
             <div className="card">
@@ -426,61 +414,176 @@ const CandidatesPage = () => {
                         </p>
                     </div>
 
-                    {canManageCandidates ? (
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                            <input
-                                type="text"
-                                placeholder="Search candidate / position..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                style={{
-                                    padding: '6px 12px',
-                                    fontSize: '0.82rem',
-                                    borderRadius: 'var(--radius-sm)',
-                                    border: '1px solid var(--border-subtle)',
-                                    backgroundColor: 'var(--panel-alt)',
-                                    color: 'var(--text)'
-                                }}
-                            />
-
-                            <select
-                                value={stageFilter}
-                                onChange={(e) => setStageFilter(e.target.value)}
-                                style={{
-                                    padding: '6px 10px',
-                                    fontSize: '0.82rem',
-                                    borderRadius: 'var(--radius-sm)',
-                                    border: '1px solid var(--border-subtle)',
-                                    backgroundColor: 'var(--panel-alt)',
-                                    color: 'var(--text)'
-                                }}
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+                        {canManageCandidates ? (
+                            <button
+                                className="primary-btn"
+                                onClick={() => setShowAddForm(!showAddForm)}
+                                style={{ padding: '6px 14px', fontSize: '0.82rem' }}
                             >
-                                <option value="ALL">All Stages</option>
-                                {recruitmentStages.map((s) => (
-                                    <option key={s.key} value={s.key}>{s.label}</option>
-                                ))}
-                            </select>
+                                {showAddForm ? 'Close Form' : '+ Add Candidate to Pipeline'}
+                            </button>
+                        ) : null}
 
-                            <select
-                                value={portalFilter}
-                                onChange={(e) => setPortalFilter(e.target.value)}
-                                style={{
-                                    padding: '6px 10px',
-                                    fontSize: '0.82rem',
-                                    borderRadius: 'var(--radius-sm)',
-                                    border: '1px solid var(--border-subtle)',
-                                    backgroundColor: 'var(--panel-alt)',
-                                    color: 'var(--text)'
-                                }}
-                            >
-                                <option value="ALL">All Portal Access</option>
-                                <option value="ACTIVE">ACTIVE</option>
-                                <option value="INVITATION_SENT">INVITATION_SENT</option>
-                                <option value="NOT_INVITED">NOT_INVITED</option>
-                            </select>
-                        </div>
-                    ) : null}
+                        {canManageCandidates ? (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Search candidate / position..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    style={{
+                                        padding: '6px 12px',
+                                        fontSize: '0.82rem',
+                                        borderRadius: 'var(--radius-sm)',
+                                        border: '1px solid var(--border-subtle)',
+                                        backgroundColor: 'var(--panel-alt)',
+                                        color: 'var(--text)'
+                                    }}
+                                />
+
+                                <select
+                                    value={stageFilter}
+                                    onChange={(e) => setStageFilter(e.target.value)}
+                                    style={{
+                                        padding: '6px 10px',
+                                        fontSize: '0.82rem',
+                                        borderRadius: 'var(--radius-sm)',
+                                        border: '1px solid var(--border-subtle)',
+                                        backgroundColor: 'var(--panel-alt)',
+                                        color: 'var(--text)'
+                                    }}
+                                >
+                                    <option value="ALL">All Stages</option>
+                                    {recruitmentStages.map((s) => (
+                                        <option key={s.key} value={s.key}>{s.label}</option>
+                                    ))}
+                                </select>
+
+                                <select
+                                    value={portalFilter}
+                                    onChange={(e) => setPortalFilter(e.target.value)}
+                                    style={{
+                                        padding: '6px 10px',
+                                        fontSize: '0.82rem',
+                                        borderRadius: 'var(--radius-sm)',
+                                        border: '1px solid var(--border-subtle)',
+                                        backgroundColor: 'var(--panel-alt)',
+                                        color: 'var(--text)'
+                                    }}
+                                >
+                                    <option value="ALL">All Portal Access</option>
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INVITATION_SENT">INVITATION_SENT</option>
+                                    <option value="NOT_INVITED">NOT_INVITED</option>
+                                </select>
+                            </>
+                        ) : null}
+                    </div>
                 </div>
+
+                {msg.text ? (
+                    <div className={`badge ${msg.type}`} style={{ marginBottom: '12px', padding: '8px 12px' }}>
+                        {msg.text}
+                    </div>
+                ) : null}
+
+                {/* Inline Add Candidate Form — shown only when toggled by HR/Admin */}
+                {showAddForm && canManageCandidates ? (
+                    <div style={{
+                        padding: '16px',
+                        backgroundColor: 'var(--panel-alt)',
+                        border: '1px solid var(--border-subtle)',
+                        borderRadius: 'var(--radius)',
+                        marginBottom: '16px'
+                    }}>
+                        <div style={{ fontWeight: 700, fontSize: '0.92rem', marginBottom: '4px' }}>
+                            Register Candidate to Recruitment Pipeline
+                        </div>
+                        <p style={{ margin: '0 0 14px', fontSize: '0.76rem', color: 'var(--text-muted)' }}>
+                            Add applicant record to the pipeline — no password required. Candidate exists only as an applicant record until a portal invitation is sent.
+                        </p>
+
+                        <form className="form-grid" onSubmit={handleSubmit}>
+                            <div className="field">
+                                <label>Full Name *</label>
+                                <input
+                                    value={form.fullName}
+                                    onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                                    placeholder="e.g. Zulfikar Ali"
+                                    required
+                                />
+                            </div>
+
+                            <div className="field">
+                                <label>Email Address *</label>
+                                <input
+                                    type="email"
+                                    value={form.email}
+                                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                    placeholder="zulfikar@gmail.com"
+                                    required
+                                />
+                            </div>
+
+                            <div className="field">
+                                <label>Phone Number</label>
+                                <input
+                                    value={form.phone}
+                                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                                    placeholder="+92-300-1122334"
+                                />
+                            </div>
+
+                            <div className="field">
+                                <label>Position Applied For *</label>
+                                <input
+                                    value={form.positionApplied}
+                                    onChange={(e) => setForm({ ...form, positionApplied: e.target.value })}
+                                    placeholder="e.g. Full Stack Engineer / CTO / Marketing Associate"
+                                    required
+                                />
+                            </div>
+
+                            <div className="field">
+                                <label>Application Source</label>
+                                <input
+                                    value={form.source}
+                                    onChange={(e) => setForm({ ...form, source: e.target.value })}
+                                    placeholder="LinkedIn / Referral / Website"
+                                />
+                            </div>
+
+                            <div className="field">
+                                <label>Initial Recruitment Stage</label>
+                                <select
+                                    value={form.status}
+                                    onChange={(e) => setForm({ ...form, status: e.target.value })}
+                                >
+                                    {recruitmentStages.map((s) => (
+                                        <option key={s.key} value={s.key}>{s.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '8px' }}>
+                                <button
+                                    type="button"
+                                    className="secondary-btn"
+                                    onClick={() => {
+                                        setShowAddForm(false);
+                                        setForm({ fullName: '', email: '', phone: '', positionApplied: 'Full Stack Engineer', source: 'LinkedIn', status: 'APPLIED' });
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button className="primary-btn" type="submit" disabled={loading}>
+                                    {loading ? 'Adding...' : 'Add Candidate to Pipeline'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                ) : null}
 
                 <div className="table-wrap">
                     <table className="table">
